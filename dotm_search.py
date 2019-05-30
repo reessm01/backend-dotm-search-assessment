@@ -4,6 +4,7 @@
 import os
 import sys
 import zipfile
+import argparse
 
 """
 Given a directory path, search all files in the path for a given text string
@@ -35,16 +36,19 @@ def find_pattern(pattern, dotm_files, found, file_count):
 def print_result(dotm, xml_content, index):
     while index != -1:
         print('Match found in file ./dotm_files/' + str(dotm))
-        print('...' + xml_content[index-40:index+40] + '...')
+        print('...' + xml_content[index-40:index+41] + '...')
         index = xml_content.find('$', index+1)
 
 def main():
-    args = sys.argv[1:]
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dir', help="directory of files")
+    parser.add_argument('char', help="special character to check")
+    args = parser.parse_args()
 
-    if args[0] == '--dir' and len(args) == 3:
-        check_files(args[2], args[1])
+    if args.dir:
+        check_files(args.char, args.dir)
     else:
-        check_files(args[0])
+        check_files(args.char)
 
 if __name__ == '__main__':
     main()
